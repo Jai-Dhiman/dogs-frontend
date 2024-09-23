@@ -2,9 +2,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { DogsIndex } from "./DogsIndex";
 import { DogsNew } from "./DogsNew";
+import { DogsShow } from "./DogsShow";
+import { Modal } from "./Modal";
 
 export function DogsPage() {
   const [dogs, setDogs] = useState([]);
+  const [isDogsShowVisible, setIsDogsShowVisible] = useState(false);
+  const [currentDog, setCurrentDog] = useState({});
 
   const handleIndex = () => {
     console.log("handleIndex");
@@ -22,11 +26,25 @@ export function DogsPage() {
     });
   };
 
+  const handleShow = (dog) => {
+    console.log("handleShow", dog);
+    setIsDogsShowVisible(true);
+    setCurrentDog(dog);
+  };
+
+  const handleClose = () => {
+    console.log("handleClose");
+    setIsDogsShowVisible(false);
+  };
+
   useEffect(handleIndex, []);
   return (
     <main>
       <DogsNew onCreate={handleCreate} />
-      <DogsIndex dogs={dogs} />
+      <DogsIndex dogs={dogs} onShow={handleShow} />
+      <Modal show={isDogsShowVisible} onClose={handleClose}>
+        <DogsShow dog={currentDog} />
+      </Modal>
     </main>
   );
 }
