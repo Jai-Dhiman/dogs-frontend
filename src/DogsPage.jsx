@@ -32,6 +32,23 @@ export function DogsPage() {
     setCurrentDog(dog);
   };
 
+  const handleUpdate = (id, params, successCallback) => {
+    console.log("handleUpdate", params);
+    axios.patch(`http://localhost:3000/dogs/${id}.json`, params).then((response) => {
+      setDogs(
+        dogs.map((dog) => {
+          if (dog.id === response.data.id) {
+            return response.data;
+          } else {
+            return dog;
+          }
+        })
+      );
+      successCallback();
+      handleClose();
+    });
+  };
+
   const handleClose = () => {
     console.log("handleClose");
     setIsDogsShowVisible(false);
@@ -43,7 +60,7 @@ export function DogsPage() {
       <DogsNew onCreate={handleCreate} />
       <DogsIndex dogs={dogs} onShow={handleShow} />
       <Modal show={isDogsShowVisible} onClose={handleClose}>
-        <DogsShow dog={currentDog} />
+        <DogsShow dog={currentDog} onUpdate={handleUpdate} />
       </Modal>
     </main>
   );
