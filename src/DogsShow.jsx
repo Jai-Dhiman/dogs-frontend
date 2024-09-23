@@ -1,4 +1,4 @@
-export function DogsShow({ dog, onUpdate }) {
+export function DogsShow({ dog, onUpdate, onDestroy }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const params = new FormData(event.target);
@@ -23,6 +23,7 @@ export function DogsShow({ dog, onUpdate }) {
         </div>
         <button type="submit">Update</button>
       </form>
+      <button onClick={() => onDestroy(dog.id)}>Delete</button>
     </div>
   );
 }

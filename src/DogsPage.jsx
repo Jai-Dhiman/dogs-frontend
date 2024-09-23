@@ -49,6 +49,14 @@ export function DogsPage() {
     });
   };
 
+  const handleDestroy = (id) => {
+    console.log("handleDestroy", id);
+    axios.delete(`http://localhost:3000/dogs/${id}.json`).then(() => {
+      setDogs(dogs.filter((dogs) => dogs.id !== id));
+      handleClose();
+    });
+  };
+
   const handleClose = () => {
     console.log("handleClose");
     setIsDogsShowVisible(false);
@@ -60,7 +68,7 @@ export function DogsPage() {
       <DogsNew onCreate={handleCreate} />
       <DogsIndex dogs={dogs} onShow={handleShow} />
       <Modal show={isDogsShowVisible} onClose={handleClose}>
-        <DogsShow dog={currentDog} onUpdate={handleUpdate} />
+        <DogsShow dog={currentDog} onUpdate={handleUpdate} onDestroy={handleDestroy} />
       </Modal>
     </main>
   );
